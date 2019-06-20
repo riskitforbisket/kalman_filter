@@ -14,8 +14,12 @@ class KalmanFilter
 
    //state position(mean) and its covariance(uncertainty)
    //X = [position velocity]
-   Eigen::Matrix2d predictX;
-   Eigen::Matrix2d predictP;
+   Eigen::Matrix2d Xproj;
+   Eigen::Matrix2d Pproj;
+   Eigen::Matrix2d Xcur;
+   Eigen::Matrix2d Pcur;
+   Eigen::Matrix2d Xupd;
+   Eigen::Matrix2d Pupd;
 
    //prediction matrix to predict foward in time
    Eigen::Matrix2d F;
@@ -31,8 +35,7 @@ class KalmanFilter
    //sensor input variables from imu or encoders
    //this is expected state and uncertainty
    //H[k]
-   Eigen::Matrix2d R; //sensor noise, covariance
-   //Eigen::Matrix2d H; //sensor
+   Eigen::Matrix2d H; //sensor readings
    Eigen::Matrix2d z; //sensor readings, mean
    Eigen::Matrix2d sensor_u;
    Eigen::Matrix2d sensor_P;
@@ -44,10 +47,10 @@ class KalmanFilter
    public:
       KalmanFilter();
       ~KalmanFilter();
+      void InitializeStates();
       void PredictionStep();
       void UpdateStep();
       void getState();
       void setSensorParameters();
-
 
 }
