@@ -2,9 +2,10 @@ import numpy as np
 
 class KalmanFilter:
 
-    def __init__(dim, updateRate):
+    #update rate is in hertz
+    def __init__(dim=2, updateRate=5):
     
-        self.timeDelta = updateRate
+        self.timeDelta = 1.0/updateRate
     
         if dim == 2:
             # stateVector = [x, y, vx, vy, ax, ay]
