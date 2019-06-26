@@ -26,6 +26,21 @@ class KalmanFilter:
             
             # controlVector (u) = [ax, ay, az]
             self.controlVector = np.array([0, 0, 0])
+            
+            # stateTransitionMatrix (A)
+            self.A = np.eye(6)
+            self.A[0,3] = self.dt
+            self.A[0,4] = self.dt
+            self.A[0,5] = self.dt
+            
+            # controlTransitionMAtrix(B)
+            self.B = np.zeros((6,3))
+            self.B[0,0] = 0.5*(self.dt**2)
+            self.B[1,1] = 0.5*(self.dt**2)
+            self.B[2,2] = 0.5*(self.dt**2)
+            self.B[3,0] = self.dt
+            self.B[4,1] = self.dt
+            self.B[5,2] = self.dt
         else:
             print("incorrect dimensions for filter")
         return
