@@ -1,5 +1,14 @@
 import numpy as np
 
+#P = state covariance matrix (error in estimate)
+#Q = process noise covariance matrix (keeps
+#   the state cov. from becoming too small or 0)
+#R = measurement cov matrix (error in measurement)
+#K = kalman gain
+    #if R -> 0 then K -> 1
+    #if R -> large then K -> 0
+    #if P -> 0 then measurements are mostely ignored.
+
 class KalmanFilter:
 
     #update rate is in hertz
@@ -9,7 +18,12 @@ class KalmanFilter:
     
         if dim == 2:
             # stateVector = [x, y, vx, vy]
-            self.stateVector = np.array([[0, 0, 0, 0]])
+            self.stateVector      = np.array([[0, 0, 0, 0]])
+            self.stateVectorPrior = np.array([[0, 0, 0, 0]])
+            
+            # sensorVector (H), this is a vector of sensor
+            # measurements that make up the stateVector
+            self.H = np.array([[0, 0, 0, 0]])
             
             # controlVector(u) = [ax, ay]
             self.controlVector = np.array([0, 0])
@@ -28,6 +42,10 @@ class KalmanFilter:
         elif dim == 3:
             # stateVector (x)= [x, y, z, vx, vy, vz]
             self.stateVector = np.array([[0, 0, 0, 0, 0, 0]])
+            
+            # sensorVector (H), this is a vector of sensor
+            # measurements that make up the stateVector
+            self.H = np.array([[0, 0, 0, 0, 0, 0]])
             
             # controlVector (u) = [ax, ay, az]
             self.controlVector = np.array([0, 0, 0])
@@ -48,7 +66,8 @@ class KalmanFilter:
             self.B[5,2] = self.dt
             
             # Uncertainty Matrix
-            self.P = np.ones((6,6))*0.5
+            self.P      = np.ones((6,6))*0.5
+            self.Pprior = np.ones((6,6))*0.5
         
             #kalmain Gain
             self.K = np.ones((6,6))*0.5
@@ -57,9 +76,12 @@ class KalmanFilter:
         return
         
     def predict():
-    
+        #xk = A*xk-1 + b*uk + q(noise)
+        #P = A*Pprior*A.T + Qk
+        self.stateVector = self.A@self.stateVectorPrior + self.B@self.controlVector + self.q
+        self.P = self.A@self.Pprior@self.A.T + self.Q
         return
         
     def update():
-        #objective: xk = A*xk-1 + b*uk + q(noise)
+        self.K = (self.P@self.H.T)@np.linalg.inverse(self.H@self.P@self.H.T + self.R)
         return
