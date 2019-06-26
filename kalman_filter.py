@@ -19,7 +19,12 @@ class KalmanFilter:
             
             #controlTransitionMat(B)
             self.B = np.array([[0.5*(self.dt**2), 0],[0, 0.5*(self.dt**2)],[self.dt,0],[0,self.dt]])
+            
+            # Uncertainty Matrix
+            self.P = np.ones((4,4))*0.5
         
+            #kalmain Gain
+            self.K = np.ones((4,4))*0.5
         elif dim == 3:
             # stateVector (x)= [x, y, z, vx, vy, vz]
             self.stateVector = np.array([[0, 0, 0, 0, 0, 0]])
@@ -41,6 +46,12 @@ class KalmanFilter:
             self.B[3,0] = self.dt
             self.B[4,1] = self.dt
             self.B[5,2] = self.dt
+            
+            # Uncertainty Matrix
+            self.P = np.ones((6,6))*0.5
+        
+            #kalmain Gain
+            self.K = np.ones((6,6))*0.5
         else:
             print("incorrect dimensions for filter")
         return
