@@ -35,7 +35,8 @@ class KalmanFilter:
             self.B = np.array([[0.5*(self.dt**2), 0],[0, 0.5*(self.dt**2)],[self.dt,0],[0,self.dt]])
             
             # Uncertainty Matrix
-            self.P = np.ones((4,4))*0.5
+            self.P      = np.ones((4,4))*0.5
+            self.Pprior = np.ones((4,4))*0.5
         
             #kalmain Gain
             self.K = np.ones((4,4))*0.5
