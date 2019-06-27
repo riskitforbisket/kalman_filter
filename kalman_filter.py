@@ -39,6 +39,15 @@ class KalmanFilter:
         
             #kalmain Gain
             self.K = np.ones((4,4))*0.5
+            
+            #C, H
+            self.C = np.eye(4)
+            self.H = np.eye(4)
+            
+            # R = sensor noise matrix
+            # Q = action uncertainty
+            self.R = np.eye(4)
+            self.Q = np.eye(4)*0.01
         elif dim == 3:
             # stateVector (x)= [x, y, z, vx, vy, vz]
             self.stateVector = np.array([[0, 0, 0, 0, 0, 0]])
@@ -71,6 +80,15 @@ class KalmanFilter:
         
             #kalmain Gain
             self.K = np.ones((6,6))*0.5
+            
+            #C, H
+            self.C = np.eye(6)
+            self.H = np.eye(6)
+            
+            # R = sensor noise matrix
+            # Q = action uncertainty
+            self.R = np.eye(6)
+            self.Q = np.eye(6)*0.01
         else:
             print("incorrect dimensions for filter")
         return
