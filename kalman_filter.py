@@ -21,9 +21,9 @@ class KalmanFilter:
             self.stateVector      = np.array([[0, 0, 0, 0]])
             self.stateVectorPrior = np.array([[0, 0, 0, 0]])
             
-            # sensorVector (H), this is a vector of sensor
+            # sensorVector, this is a vector of sensor
             # measurements that make up the stateVector
-            self.H = np.array([[0, 0, 0, 0]])
+            self.sensorReadings = np.array([[0, 0, 0, 0]])
             
             # controlVector(u) = [ax, ay]
             self.controlVector = np.array([0, 0])
@@ -52,9 +52,9 @@ class KalmanFilter:
             # stateVector (x)= [x, y, z, vx, vy, vz]
             self.stateVector = np.array([[0, 0, 0, 0, 0, 0]])
             
-            # sensorVector (H), this is a vector of sensor
+            # sensorVector , this is a vector of sensor
             # measurements that make up the stateVector
-            self.H = np.array([[0, 0, 0, 0, 0, 0]])
+            self.sensorReadings = np.array([[0, 0, 0, 0, 0, 0]])
             
             # controlVector (u) = [ax, ay, az]
             self.controlVector = np.array([0, 0, 0])
@@ -96,10 +96,17 @@ class KalmanFilter:
     def predict():
         #xk = A*xk-1 + b*uk + q(noise)
         #P = A*Pprior*A.T + Qk
-        self.stateVector = self.A@self.stateVectorPrior + self.B@self.controlVector + self.q
+        self.stateVector = self.A@self.stateVectorPrior + self.B@self.controlVector
         self.P = self.A@self.Pprior@self.A.T + self.Q
         return
         
     def update():
         self.K = (self.P@self.H.T)@np.linalg.inverse(self.H@self.P@self.H.T + self.R)
+        y = self.sensorReadings - (self.H@self.stateVector)
+        self.stateVector = self.stateVector + (self.K@y)
+        self.P = (np.eye(6) - (self.K@self.H))@self.P
+        
+        #update the priors for next iteration
+        self.stateVectorPrior = self.stateVector
+        self.Pprior = self.P
         return
