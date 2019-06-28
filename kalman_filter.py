@@ -111,3 +111,11 @@ class KalmanFilter:
         self.stateVectorPrior = self.stateVector
         self.Pprior = self.P
         return
+    
+    def simulateSensorData():
+        
+        return
+    
+    def simulateInput():
+        
+        return
